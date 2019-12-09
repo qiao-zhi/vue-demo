@@ -21,8 +21,6 @@ Vue.component(Field.name, Field);
 Vue.component(Button.name, Button);
 Vue.config.productionTip = false;
 
-Vue.prototype.projectBaseAddress = "http://localhost:8088/";
-
 new Vue({
 	router,
 	store,

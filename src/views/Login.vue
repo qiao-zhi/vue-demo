@@ -34,10 +34,6 @@
 	import axios from "axios";
 	import Constants from '@/Constants.vue';
 
-	// 允许携带跨域cookie
-	axios.defaults.withCredentials = true;
-	console.log(axios.defaults.withCredentials);
-
 	var login = {
 		name: 'login',
 		store,
@@ -110,7 +106,7 @@
 						var responseData = response.data;
 						if(responseData.success) {
 							login.isReg = false;
-							console.log(login.isReg);
+							
 							Toast("注册成功");
 						} else {
 							MessageBox.alert(responseData.msg);
