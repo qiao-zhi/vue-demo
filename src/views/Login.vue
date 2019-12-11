@@ -14,7 +14,7 @@
 		<div v-else>
 			<h1>注册</h1>
 			<mt-field label="用户名" placeholder="Input username" v-model="username"></mt-field>
-			<mt-field label="用户姓名" placeholder="Input fullname" v-model="fullname"></mt-field>
+			<mt-field label="用户姓名" placeholder="Input userfullname" v-model="userfullname"></mt-field>
 			<mt-field label="密    码" placeholder="Input password" type="password" v-model="password"></mt-field>
 			<mt-field label="电    话" placeholder="Input phone" v-model="phone"></mt-field>
 			<mt-radio title="性    别" v-model="sex" :options="sexOptions" align="right">
@@ -41,7 +41,7 @@
 			return {
 				isReg: false,
 				username: '',
-				fullname: '',
+				userfullname: '',
 				password: '',
 				phone: '',
 				sex: '',
@@ -57,7 +57,7 @@
 			};
 		},
 		methods: {
-			login() {
+			async login() {
 				this.isReg = false;
 				if(this.username == "" || this.password == "") {
 					MessageBox.alert("账号密码必须输入");
@@ -65,62 +65,59 @@
 				}
 
 				// 异步登录
-				axios.post(Constants.projectBaseAddress + '/doLoginJSON.html', {
-						username: this.username,
-						password: this.password
-					})
-					.then(function(response) {
-						var responseData = response.data;
-						if(responseData.success) {
-							Toast("登录成功");
+				var response = await axios.post(Constants.projectBaseAddress + '/doLoginJSON.html', {
+					username: this.username,
+					password: this.password
+				});
 
-							window.location.href = Constants.projectBaseAddress + "/index.html";
-						} else {
-							MessageBox.alert(responseData.msg);
-						}
-					})
-					.catch(function(error) {
-						console.log(error);
-					});
+				var responseData = response.data;
+				if(responseData.success) {
+					Toast("登录成功");
+
+					// 将用户存入localStorage
+					localStorage.setItem("username", responseData.data.username);
+					localStorage.setItem("userfullname", responseData.data.userfullname);
+
+					// 跳转路由
+					this.$router.replace("/home");
+				} else {
+					MessageBox.alert(responseData.msg);
+				}
 			},
 			reg() {
 				this.username = '';
 				this.password = '';
 				this.isReg = true;
 			},
-			addUser() {
-				if(this.username == '' || this.password == '' || this.fullname == '' || this.phone == '' || this.sex == '') {
+			async addUser() {
+				if(this.username == '' || this.password == '' || this.userfullname == '' || this.phone == '' || this.sex == '') {
 					MessageBox.alert("请检查必填字段!!!");
 					return;
 				}
 
 				// 异步注册
-				axios.post(Constants.projectBaseAddress + '/user/doAddUserJSON.html', {
-						username: this.username,
-						fullname: this.fullname,
-						password: this.password,
-						phone: this.phone,
-						sex: this.sex,
-					})
-					.then(function(response) {
-						var responseData = response.data;
-						if(responseData.success) {
-							login.isReg = false;
-							
-							Toast("注册成功");
-						} else {
-							MessageBox.alert(responseData.msg);
-						}
-					})
-					.catch(function(error) {
-						console.log(error);
-					});
+				var response = await axios.post(Constants.projectBaseAddress + '/user/addUserJSON.html', {
+					username: this.username,
+					userfullname: this.userfullname,
+					password: this.password,
+					phone: this.phone,
+					sex: this.sex,
+				});
+
+				var responseData = response.data;
+				console.log(responseData);
+				if(responseData.success) {
+					this.isReg = false;
+
+					Toast("注册成功");
+				} else {
+					MessageBox.alert(responseData.msg);
+				}
 			},
 			cancel() {
 				this.isReg = false;
 			}
-		},
-	};
-
+		}
+	}
 	export default login;
 </script>
