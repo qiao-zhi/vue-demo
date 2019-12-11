@@ -9,10 +9,6 @@ import { Header } from 'mint-ui';
 import { Navbar, TabItem } from 'mint-ui';
 import { Radio } from 'mint-ui';
 
-// 自己定义的全局JS文件，用于存放一些全局的JS变量
-import Constants from './Constants.vue';
-console.log(Constants);
-
 Vue.component(Radio.name, Radio);
 Vue.component(Navbar.name, Navbar);
 Vue.component(TabItem.name, TabItem);

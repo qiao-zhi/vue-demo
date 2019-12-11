@@ -31,8 +31,7 @@
 	import store from '@/store';
 	import { MessageBox } from 'mint-ui';
 	import { Toast } from 'mint-ui';
-	import axios from "axios";
-	import Constants from '@/Constants.vue';
+	import axios from "@/axios";
 
 	var login = {
 		name: 'login',
@@ -65,23 +64,20 @@
 				}
 
 				// 异步登录
-				var response = await axios.post(Constants.projectBaseAddress + '/doLoginJSON.html', {
+				var response = await axios.post('/doLoginJSON.html', {
 					username: this.username,
 					password: this.password
 				});
 
-				var responseData = response.data;
-				if(responseData.success) {
+				if(response.success) {
 					Toast("登录成功");
 
 					// 将用户存入localStorage
-					localStorage.setItem("username", responseData.data.username);
-					localStorage.setItem("userfullname", responseData.data.userfullname);
+					localStorage.setItem("username", response.data.username);
+					localStorage.setItem("userfullname", response.data.userfullname);
 
 					// 跳转路由
 					this.$router.replace("/home");
-				} else {
-					MessageBox.alert(responseData.msg);
 				}
 			},
 			reg() {
@@ -96,7 +92,7 @@
 				}
 
 				// 异步注册
-				var response = await axios.post(Constants.projectBaseAddress + '/user/addUserJSON.html', {
+				var response = await axios.post('/user/addUserJSON.html', {
 					username: this.username,
 					userfullname: this.userfullname,
 					password: this.password,
@@ -104,14 +100,10 @@
 					sex: this.sex,
 				});
 
-				var responseData = response.data;
-				console.log(responseData);
-				if(responseData.success) {
+				if(response.success) {
 					this.isReg = false;
 
 					Toast("注册成功");
-				} else {
-					MessageBox.alert(responseData.msg);
 				}
 			},
 			cancel() {
