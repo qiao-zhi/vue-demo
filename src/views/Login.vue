@@ -9,7 +9,7 @@
 			<br/>
 			<mt-button size="large" type="default" @click.prevent="reg()" key="reg" plain>注册</mt-button>
 			<br/>
-
+      <x-button type="warn">vux按钮</x-button>
 		</form>
 		<div v-else>
 			<h1>注册</h1>

@@ -9,6 +9,9 @@ import { Header } from 'mint-ui';
 import { Navbar, TabItem } from 'mint-ui';
 import { Radio } from 'mint-ui';
 
+import { XButton } from 'vux'
+Vue.component('x-button', XButton)
+
 Vue.component(Radio.name, Radio);
 Vue.component(Navbar.name, Navbar);
 Vue.component(TabItem.name, TabItem);
